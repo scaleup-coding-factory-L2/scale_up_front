@@ -1,0 +1,11 @@
+version: '3.7'
+
+services:
+  front:
+    build:
+      context: ../
+      dockerfile: ./docker/Dockerfile-dev
+    volumes:
+      - ../src:/app/src
+    ports:
+      - "3001:3001"
