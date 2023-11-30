@@ -53,8 +53,16 @@ type Structure = Company | Person;
 
 interface Employee {}
 
-const personSchema = z.object({
-  status: z.literal("temp-worker") || z.literal("freelance"),
+const tempWorkerSchema = z.object({
+  status: z.literal("temp-worker"),
+  firstName: z.string(),
+  lastName: z.string(),
+  phone: z.string(),
+  email: z.string().email(),
+});
+
+const freelanceSchema = z.object({
+  status: z.literal("freelance"),
   firstName: z.string(),
   lastName: z.string(),
   phone: z.string(),
@@ -73,8 +81,9 @@ const companySchema = z.object({
 
 // Schema must be either companySchema or personSchema
 const structureSchema = z.discriminatedUnion("status", [
+  tempWorkerSchema,
+  freelanceSchema,
   companySchema,
-  personSchema,
 ]);
 
 export default function StructureForm() {
@@ -82,9 +91,14 @@ export default function StructureForm() {
     resolver: zodResolver(structureSchema),
   });
 
+  const { watch } = useForm<z.infer<typeof structureSchema>>({
+    resolver: zodResolver(structureSchema),
+  });
+
   const [canEdit, setCanEdit] = useState(false);
 
-  const [structureType, setStructureType] = useState<string | null>(null);
+  const [status, setStatus] = useState<string>();
+  // const status = watch("status");
 
   const personValues = ["temp-worker", "freelance"];
   const companyValues = ["llc"];
@@ -109,9 +123,11 @@ export default function StructureForm() {
                 <FormItem>
                   <FormLabel htmlFor="status">Statut</FormLabel>
                   <Select
-                    onValueChange={(value) => {
-                      setStructureType(value);
+                    onValueChange={() => {
+                      setStatus(field.value);
+                      field.onChange;
                     }}
+                    defaultValue={field.value}
                   >
                     <FormControl>
                       <SelectTrigger id="status">
@@ -130,19 +146,25 @@ export default function StructureForm() {
                 </FormItem>
               )}
             />
-            <Label htmlFor="status">Statut</Label>
 
-            {structureType && personValues.includes(structureType) ? (
-              <PersonForm />
+            {status && personValues.includes(status) ? (
+              <PersonForm form={form} />
             ) : (
               <CompanyForm />
             )}
           </CardContent>
           <CardFooter className="flex gap-1">
-            <Button type="submit" variant="destructive">
-              Annuler
+            <pre>{JSON.stringify(watch(), null, 2)}</pre>
+            <Button variant="destructive">Annuler</Button>
+            <Button
+              type="submit"
+              onClick={() => {
+                console.log(status);
+                setCanEdit(false);
+              }}
+            >
+              Enregistrer
             </Button>
-            <Button>Enregistrer</Button>
           </CardFooter>
         </form>
       </Form>
@@ -150,20 +172,61 @@ export default function StructureForm() {
   );
 }
 
-function PersonForm() {
+function PersonForm({ form }: { form: any }) {
   return (
     <>
-      <Label htmlFor="firstName">Prénom</Label>
-      <Input id="firstName" placeholder="Prénom" />
-
-      <Label htmlFor="lastName">Nom</Label>
-      <Input id="lastName" placeholder="Nom" />
-
-      <Label htmlFor="phone">Téléphone</Label>
-      <Input id="phone" placeholder="Téléphone" />
-
-      <Label htmlFor="email">Email</Label>
-      <Input id="email" placeholder="Email" />
+      <FormField
+        control={form.control}
+        name="firstName"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel htmlFor="firstName">Prénom</FormLabel>
+            <FormControl>
+              <Input id="firstName" placeholder="Prénom" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="lastName"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel htmlFor="lastName">Nom</FormLabel>
+            <FormControl>
+              <Input id="lastName" placeholder="Nom" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="phone"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel htmlFor="phone">Téléphone</FormLabel>
+            <FormControl>
+              <Input id="phone" placeholder="Téléphone" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="email"
+        render={({ field }) => (
+          <FormItem>
+            <FormLabel htmlFor="email">Email</FormLabel>
+            <FormControl>
+              <Input id="email" placeholder="Email" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </>
   );
 }
