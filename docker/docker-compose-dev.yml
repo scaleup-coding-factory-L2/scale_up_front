@@ -9,3 +9,4 @@ services:
       - ../src:/app/src
     ports:
       - "3001:3001"
+      - "3007:3007"
