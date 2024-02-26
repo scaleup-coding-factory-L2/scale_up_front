@@ -1,0 +1,28 @@
+@import 'tailwindcss/base';
+@import 'tailwindcss/components';
+@import 'tailwindcss/utilities';
+
+body {
+    font-family: sans-serif;
+  }
+  
+  .container {
+    max-width: 1200px;
+  }
+  
+  .header {
+    text-align: center;
+  }
+  
+  .main {
+    padding: 4rem 0;
+  }
+  
+  .section {
+    margin-bottom: 4rem;
+  }
+  
+  .module {
+    box-shadow: 0 0 1px rgba(0, 0, 0, 0.1);
+  }
+  
