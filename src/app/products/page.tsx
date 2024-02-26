@@ -2,8 +2,7 @@
 import isAuth from "@/components/isAuth";
 import { KeycloakContext } from "@/components/isAuth";
 import { useContext } from "react";
-import Link from "next/link";
-function Home() {
+function Products() {
   const keycloak = useContext(KeycloakContext);
   return (
     <div className={"flex flex-col"}>
@@ -14,11 +13,8 @@ function Home() {
       <div>
         <button onClick={() => keycloak?.logout()}>logout</button>
       </div>
-      <div>
-        <Link href={"/products"}> go to products</Link>
-      </div>
     </div>
   );
 }
 
-export default isAuth(Home);
+export default isAuth(Products);
