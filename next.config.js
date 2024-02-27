@@ -1,8 +1,3 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {
-  onDemandEntries: {
-    websocketPort: 3007,
-  },
-};
-
+const nextConfig = {};
 module.exports = nextConfig;
