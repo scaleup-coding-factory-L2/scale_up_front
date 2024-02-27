@@ -5,25 +5,15 @@ import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
+import { FloatingLabelInput } from "@/components/floating-label-input";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import {
   Select,
   SelectContent,
@@ -32,6 +22,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { useForm } from "react-hook-form";
+import { Separator } from "@/components/ui/separator";
 
 type Company = {
   name: string;
@@ -39,7 +30,6 @@ type Company = {
   address: string;
   zipCode: string;
   city: string;
-  country: string;
 };
 
 type Person = {
@@ -53,20 +43,21 @@ type Structure = Company | Person;
 
 interface Employee {}
 
-const tempWorkerSchema = z.object({
-  status: z.literal("temp-worker"),
+const personBaseSchema = {
   firstName: z.string(),
   lastName: z.string(),
   phone: z.string(),
   email: z.string().email(),
+};
+
+const tempWorkerSchema = z.object({
+  status: z.literal("temp-worker"),
+  ...personBaseSchema,
 });
 
 const freelanceSchema = z.object({
   status: z.literal("freelance"),
-  firstName: z.string(),
-  lastName: z.string(),
-  phone: z.string(),
-  email: z.string().email(),
+  ...personBaseSchema,
 });
 
 const companySchema = z.object({
@@ -76,7 +67,6 @@ const companySchema = z.object({
   address: z.string(),
   zipCode: z.string(),
   city: z.string(),
-  country: z.string(),
 });
 
 // Schema must be either companySchema or personSchema
@@ -86,89 +76,77 @@ const structureSchema = z.discriminatedUnion("status", [
   companySchema,
 ]);
 
-export default function StructureForm() {
-  const form = useForm<z.infer<typeof structureSchema>>({
+export type StructureSchemaType = z.infer<typeof structureSchema>;
+
+interface StructureFormProps {
+  onSubmit?: (values: StructureSchemaType) => void;
+}
+
+export default function StructureForm({ onSubmit }: StructureFormProps) {
+  const form = useForm<StructureSchemaType>({
     resolver: zodResolver(structureSchema),
+    // TODO : Define default values by fetching from the database  (Structure depends on the structure status)
+    defaultValues: {
+      status: "freelance",
+      firstName: "John",
+      lastName: "Doe",
+      phone: "0123456789",
+      email: "johndoe@gmail.com",
+    },
   });
 
-  const { watch } = useForm<z.infer<typeof structureSchema>>({
-    resolver: zodResolver(structureSchema),
-  });
-
-  const [canEdit, setCanEdit] = useState(false);
-
-  const [status, setStatus] = useState<string>();
-  // const status = watch("status");
+  const [status, setStatus] = useState<string>("temp-worker");
 
   const personValues = ["temp-worker", "freelance"];
   const companyValues = ["llc"];
 
-  function onSubmit(values: z.infer<typeof structureSchema>) {
-    console.log(values);
-  }
-
   return (
-    <Card className="mx-auto mt-8 max-w-6xl px-8">
-      <CardHeader>
-        <CardTitle>Ma Structure</CardTitle>
-        <CardDescription>Informations sur ma structure</CardDescription>
-      </CardHeader>
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <CardContent>
-            <FormField
-              control={form.control}
-              name="status"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel htmlFor="status">Statut</FormLabel>
-                  <Select
-                    onValueChange={() => {
-                      setStatus(field.value);
-                      field.onChange;
-                    }}
-                    defaultValue={field.value}
-                  >
-                    <FormControl>
-                      <SelectTrigger id="status">
-                        <SelectValue placeholder="Choisissez votre statut" />
-                      </SelectTrigger>
-                    </FormControl>
-                    <SelectContent>
-                      <SelectItem value="temp-worker">Vacataire</SelectItem>
-                      <SelectItem value="freelance">
-                        Auto-entrepreneur
-                      </SelectItem>
-                      <SelectItem value="llc">SARL</SelectItem>
-                    </SelectContent>
-                  </Select>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+    <Form {...form}>
+      <form onSubmit={form.handleSubmit(console.log)}>
+        <FormField
+          control={form.control}
+          name="status"
+          render={({ field }) => (
+            <FormItem>
+              <Select
+                onValueChange={(value) => {
+                  field.onChange(value);
+                  setStatus(value);
+                }}
+                defaultValue={field.value}
+              >
+                <FormControl>
+                  <SelectTrigger id="status">
+                    <SelectValue placeholder="Choisissez votre statut" />
+                  </SelectTrigger>
+                </FormControl>
+                <SelectContent>
+                  <SelectItem value="temp-worker">Vacataire</SelectItem>
+                  <SelectItem value="freelance">Auto-entrepreneur</SelectItem>
+                  <SelectItem value="llc">SARL</SelectItem>
+                </SelectContent>
+              </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-            {status && personValues.includes(status) ? (
+        {status && (
+          <>
+            <Separator className="my-4" />
+            {personValues.includes(status) ? (
               <PersonForm form={form} />
             ) : (
-              <CompanyForm />
+              <CompanyForm form={form} />
             )}
-          </CardContent>
-          <CardFooter className="flex gap-1">
-            <pre>{JSON.stringify(watch(), null, 2)}</pre>
-            <Button variant="destructive">Annuler</Button>
-            <Button
-              type="submit"
-              onClick={() => {
-                console.log(status);
-                setCanEdit(false);
-              }}
-            >
-              Enregistrer
-            </Button>
-          </CardFooter>
-        </form>
-      </Form>
-    </Card>
+          </>
+        )}
+        <div className="flex justify-end gap-1">
+          <Button variant="destructive">Annuler</Button>
+          <Button type="submit">Enregistrer</Button>
+        </div>
+      </form>
+    </Form>
   );
 }
 
@@ -180,9 +158,12 @@ function PersonForm({ form }: { form: any }) {
         name="firstName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel htmlFor="firstName">Prénom</FormLabel>
             <FormControl>
-              <Input id="firstName" placeholder="Prénom" />
+              <FloatingLabelInput
+                {...field}
+                id="firstName"
+                placeholder="Prénom"
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -193,9 +174,8 @@ function PersonForm({ form }: { form: any }) {
         name="lastName"
         render={({ field }) => (
           <FormItem>
-            <FormLabel htmlFor="lastName">Nom</FormLabel>
             <FormControl>
-              <Input id="lastName" placeholder="Nom" />
+              <FloatingLabelInput {...field} id="lastName" placeholder="Nom" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -206,9 +186,12 @@ function PersonForm({ form }: { form: any }) {
         name="phone"
         render={({ field }) => (
           <FormItem>
-            <FormLabel htmlFor="phone">Téléphone</FormLabel>
             <FormControl>
-              <Input id="phone" placeholder="Téléphone" />
+              <FloatingLabelInput
+                {...field}
+                id="phone"
+                placeholder="Téléphone"
+              />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -219,9 +202,8 @@ function PersonForm({ form }: { form: any }) {
         name="email"
         render={({ field }) => (
           <FormItem>
-            <FormLabel htmlFor="email">Email</FormLabel>
             <FormControl>
-              <Input id="email" placeholder="Email" />
+              <FloatingLabelInput {...field} id="email" placeholder="Email" />
             </FormControl>
             <FormMessage />
           </FormItem>
@@ -231,26 +213,77 @@ function PersonForm({ form }: { form: any }) {
   );
 }
 
-function CompanyForm() {
+function CompanyForm({ form }: { form: any }) {
   return (
     <>
-      <Label htmlFor="name">Nom</Label>
-      <Input id="name" placeholder="Nom" />
-
-      <Label htmlFor="siret">SIRET</Label>
-      <Input id="siret" placeholder="SIRET" />
-
-      <Label htmlFor="address">Adresse</Label>
-      <Input id="address" placeholder="Adresse" />
-
-      <Label htmlFor="zipCode">Code postal</Label>
-      <Input id="zipCode" placeholder="Code postal" />
-
-      <Label htmlFor="city">Ville</Label>
-      <Input id="city" placeholder="Ville" />
-
-      <Label htmlFor="country">Pays</Label>
-      <Input id="country" placeholder="Pays" />
+      <FormField
+        control={form.control}
+        name="name"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <FloatingLabelInput {...field} id="name" placeholder="Nom" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="siret"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <FloatingLabelInput {...field} id="siret" placeholder="SIRET" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="address"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <FloatingLabelInput
+                {...field}
+                id="address"
+                placeholder="Adresse"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="zipCode"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <FloatingLabelInput
+                {...field}
+                id="zipCode"
+                placeholder="Code postal"
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="city"
+        render={({ field }) => (
+          <FormItem>
+            <FormControl>
+              <FloatingLabelInput {...field} id="city" placeholder="Ville" />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
     </>
   );
 }
