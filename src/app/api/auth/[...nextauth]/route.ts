@@ -137,7 +137,7 @@ const handler = NextAuth({
     },
   },
   events: {
-    signOut: ({ session, token }) => doFinalSignoutHandshake(token),
+    signOut: ({ token }) => doFinalSignoutHandshake(token),
   },
 });
 
