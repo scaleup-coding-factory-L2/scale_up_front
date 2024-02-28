@@ -1,6 +1,6 @@
 'use client'
 
-/*import axios from 'axios';
+import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
 /*
@@ -12,12 +12,11 @@ model Subject {
   syllabus Syllabus[]
   needs Need[]
   hourlyRates HourlyRate[]
-}
+}*/ 
 
 
 export default function DeleteACategory() {
 
-    /*
     const [data, setData] = useState([]);
     useEffect(() => {
         const fetchData = async () => {
@@ -28,28 +27,6 @@ export default function DeleteACategory() {
         fetchData();
       }, []);
       console.log('test,::: ', data)
-      
-      state = {
-        name: ''
-      }
-    
-      handleChange = event => {
-        this.setState({ name: event.target.value });
-      }
-    
-      handleSubmit = event => {
-        event.preventDefault();
-    
-        const user = {
-          name: this.state.name
-        };
-    
-        axios.post(`https://jsonplaceholder.typicode.com/users`, { user })
-          .then(res => {
-            console.log(res);
-            console.log(res.data);
-          })
-      }
     return(
         /*<div className="flex inline-block border content-center flex-col justify-center border-8 pr-0 w-full max-w-xs">
             <div className="flex mx-10 flex-col justify-center">
@@ -65,43 +42,11 @@ export default function DeleteACategory() {
             </form>
             </div>
             
-        </div>
+        </div>*/
 
-        
+      <>
+<p>test</p>
+      </>
     )
-}*/
-
-import axios from "axios";
-import React, { useState } from "react";
-
-interface Category {
-    name: string;
 }
-
-function FormCreateCategory() {
-    const [categoryName, setCategoryName] = useState("");
-    const [categorys, setCategorys] = useState<Category[]>([]);
-
-    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setCategoryName(event.target.value);
-    };
-
-    const addCategory = async () => {
-        const newCategory: Category = { name: categoryName };
-        await axios.post('http://localhost:3000/cat/category', newCategory);
-        setCategorys([...categorys, newCategory]);
-        setCategoryName("");
-    };
-
-    return (
-        <form>
-            <label>Name:</label>
-            <input type="text" name="name" value={categoryName} onChange={handleNameChange} />
-            <br />
-            <button type="button" onClick={addCategory}>Submit</button>
-        </form>
-    );
-}
-
-export default FormCreateCategory;
 
