@@ -1,52 +1,79 @@
 'use client'
 
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
+import React,{useState,useEffect} from 'react';
 
-/*
-model Subject {
-  id Int @id @default(autoincrement())
-  name String
-  level String
-  category String
-  syllabus Syllabus[]
-  needs Need[]
-  hourlyRates HourlyRate[]
-}*/ 
-
-
-export default function FormUpdateSubject() {
-
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-          const response = await axios.get('http://localhost:3000/sub/subject/:id');
-          setData(response.data);
-        };
-    
-        fetchData();
-      }, []);
-      console.log('test,::: ', data)
-    return(
-        /*<div className="flex inline-block border content-center flex-col justify-center border-8 pr-0 w-full max-w-xs">
-            <div className="flex mx-10 flex-col justify-center">
-            <span className="font-bold text-l mb-2 flex justify-center">Formulaire de création de category</span>
-            <form className=" flex items-center flex-col ">
-                <div className="flex flex-col content-center">
-                    <label className="flex items-center justify-center mb-2">Inscrivez ci dessous le nom de votre nouvelle categorie pour vos cours:</label>
-                    <input placeholder="Write here..." className="flex content-center px-2 py-1 border rounded"/>
-                </div>
-                <div>
-                    <button className="flex border rounded space-x-4">Add category</button>
-                </div>
-            </form>
-            </div>
-            
-        </div>*/
-
-      <>
-<p>test</p>
-      </>
-    )
+interface Subject {
+    id?:number;
+    name: string;
+    level:string;
+    categoryId?:number|undefined;
 }
 
+export default function FormUpdateSubject(props:Subject) {
+    const [subjectName, setSubjectName] = useState("");
+    const [subjectLevel, setSubjectLevel] = useState("");
+    const [subjectCategoryId, setSubjectCategoryId] = useState<number|undefined>(undefined);
+    const [subjects, setSubjects] = useState<Subject[]>([]);
+    const [CategoryTable, setCategoryTable] = useState<{ id: number, name: string }[]>([]);
+
+    useEffect(() => {
+        const fetchData = async () => {
+          const response = await axios.get('http://localhost:3000/cat/category');
+          setCategoryTable(response.data);
+        };
+        fetchData();
+      }, []);
+
+    const handleNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSubjectName(event.target.value);
+    };
+    const handleLevelChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setSubjectLevel(event.target.value);
+    };
+    const handleCategoryIdChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+        setSubjectCategoryId(parseInt(event.target.value, 10));
+    };
+
+    const addSubject = async () => {
+        if(subjectName!==""){
+            if(subjectLevel!==""){
+                if(subjectCategoryId!==undefined){
+                    const updateSubject: Subject = { name: subjectName, level: subjectLevel, categoryId:subjectCategoryId};
+                    console.log('put',updateSubject)
+                    await axios.put('http://localhost:3000/sub/subject/'+props.id, updateSubject);
+                    setSubjects([...subjects, updateSubject]);
+                    setSubjectName("");
+                    setSubjectLevel("");
+                    setSubjectCategoryId(undefined);
+                }else{
+                    alert(`vous semblez avoir oublié de remplir le champ d'association de category. Veuillez le séléctionner pour valider.`)
+                }
+            }else{
+                alert(`vous semblez avoir oublié de remplir le champ level. Veuillez le remplir pour valider.`)
+            }
+        }else{
+            alert(`vous semblez avoir oublié de remplir le champ name. Veuillez le remplir pour valider.`)
+        }
+    };
+
+  return(
+    <>
+      <form>
+            <label>Name:</label>
+            <input type="text" name="name" value={subjectName} onChange={handleNameChange} placeholder="write name of category here..."/>
+            <br />
+            <label>Level:</label>
+            <input type="text" name="level" value={subjectLevel} onChange={handleLevelChange} placeholder="write level of category here..."/>
+            <br />
+            <label>Category:</label>
+            <select name="category" value={subjectCategoryId} onChange={handleCategoryIdChange} required>
+                {CategoryTable.map((categoryElement) => (
+                    <option key={categoryElement.id} value={categoryElement.id}>{categoryElement.name}</option>
+                ))}
+            </select>            
+            <button type="button" onClick={addSubject}>Submit</button>
+        </form>
+    </>
+    )
+}

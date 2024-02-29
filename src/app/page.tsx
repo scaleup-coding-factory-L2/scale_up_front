@@ -1,9 +1,8 @@
-import FormCreateCategory from "../components/FormCreateCategory";
-
+import ListingSubject from "@/components/ListingSubject";
 export default function Home() {
   return (
     <div>
-      <FormCreateCategory />
+      <ListingSubject />
     </div>
   );
 }

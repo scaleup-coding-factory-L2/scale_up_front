@@ -1,52 +1,36 @@
 'use client'
 
 import axios from 'axios';
-import React, { useEffect, useState } from 'react';
-
-/*
-model Subject {
-  id Int @id @default(autoincrement())
-  name String
-  level String
-  category String
-  syllabus Syllabus[]
-  needs Need[]
-  hourlyRates HourlyRate[]
-}*/ 
+import React from 'react';
 
 
-export default function DeleteASubject() {
+interface Subject {
+  subjectid:number
+  
+}
+export default function DeleteASubject(props: Subject) {
+  //const [subjectUsCategory, setSubjectUsCategory] = useState<Subject[]>([]);
 
-    const [data, setData] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-          const response = await axios.get('http://localhost:3000/sub/subject/:id');
-          setData(response.data);
-        };
-    
-        fetchData();
-      }, []);
-      console.log('test,::: ', data)
-    return(
-        /*<div className="flex inline-block border content-center flex-col justify-center border-8 pr-0 w-full max-w-xs">
-            <div className="flex mx-10 flex-col justify-center">
-            <span className="font-bold text-l mb-2 flex justify-center">Formulaire de création de category</span>
-            <form className=" flex items-center flex-col ">
-                <div className="flex flex-col content-center">
-                    <label className="flex items-center justify-center mb-2">Inscrivez ci dessous le nom de votre nouvelle categorie pour vos cours:</label>
-                    <input placeholder="Write here..." className="flex content-center px-2 py-1 border rounded"/>
-                </div>
-                <div>
-                    <button className="flex border rounded space-x-4">Add category</button>
-                </div>
-            </form>
-            </div>
-            
-        </div>*/
+  /*const apiEndPoint = `http://localhost:3000/sub/subject/${props.categoryId}`;
+  useEffect(() => {
+    const getCategorys = async () => {
+      const { data: res } = await axios.get(apiEndPoint);
+      setSubjectUsCategory(res);
+    };
+    getCategorys();
+  }, []);
+  console.log('testing:',subjectUsCategory);*/
 
-      <>
-<p>test</p>
-      </>
+  const handleDelete = async () => {
+    //if(subjectUsCategory.length === 0){
+      await axios.delete(`http://localhost:3000/sub/subject/${props.subjectid}`);
+    //}else{
+      //alert('vous ne pouvez pas delete une matiere utilisé dans un autre element deja existant')
+    //}
+  };
+  return(
+    <>
+      <button onClick={() => handleDelete()}>Delete</button> 
+    </>
     )
 }
-

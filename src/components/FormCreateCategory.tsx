@@ -87,16 +87,22 @@ function FormCreateCategory() {
     };
 
     const addCategory = async () => {
-        const newCategory: Category = { name: categoryName };
-        await axios.post('http://localhost:3000/cat/category', newCategory);
-        setCategorys([...categorys, newCategory]);
-        setCategoryName("");
+        if(categoryName!=null||categoryName!=""||categoryName!=undefined){
+            const newCategory: Category = { name: categoryName };
+            await axios.post('http://localhost:3000/cat/category', newCategory);
+            setCategorys([...categorys, newCategory]);
+            setCategoryName("");
+        }else{
+            
+        }
+       
     };
 
     return (
+
         <form>
             <label>Name:</label>
-            <input type="text" name="name" value={categoryName} onChange={handleNameChange} />
+            <input type="text" name="name" value={categoryName} onChange={handleNameChange} placeholder="write name of category here..."/>
             <br />
             <button type="button" onClick={addCategory}>Submit</button>
         </form>
