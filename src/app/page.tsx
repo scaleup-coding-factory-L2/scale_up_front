@@ -3,8 +3,9 @@ import { useSession, signIn, signOut } from "next-auth/react";
 import { useEffect } from "react";
 import { LoadingSpinner } from "@/components/LoadingSpinner/LoadingSpinner";
 
-function Home() {
+export default function Home() {
   const { data: session, status } = useSession();
+
   useEffect(() => {
     if (status === "unauthenticated") {
       signIn("keycloak", {
@@ -13,18 +14,20 @@ function Home() {
       //!!! ROLES ARE IN session.user.roles when authenticated !!!
     }
   }, [session]);
+
   if (status === "loading" || status === "unauthenticated")
     return (
       <div>
         <LoadingSpinner />
       </div>
     );
+
   return (
     <div className={"flex flex-col"}>
       <button onClick={() => signOut()}>Sign out</button>
       welcome to home{" "}
     </div>
   );
+  
 }
 
-export default Home;
