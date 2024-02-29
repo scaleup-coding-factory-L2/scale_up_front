@@ -54,10 +54,8 @@ declare module "next-auth" {
     name: string;
     telephone: string;
     preferred_username: string;
-    resource_access: {
-      exploitation: {
-        roles: string[];
-      };
+    realm_access: {
+      roles: string[];
     };
     org_name: string;
     given_name: string;

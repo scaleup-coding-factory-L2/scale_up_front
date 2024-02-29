@@ -17,7 +17,9 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body
+        className={`h-screen ${inter.className} bg-back-pattern bg-light-gray bg-background bg-cover bg-center bg-no-repeat font-light`}
+      >
         <NextAuthProvider>{children}</NextAuthProvider>
       </body>
     </html>

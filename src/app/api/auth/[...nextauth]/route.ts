@@ -119,8 +119,7 @@ const handler = NextAuth({
         params.token.accessToken = params.account.access_token;
         params.token.refreshToken = params.account.refresh_token;
         params.token.idToken = params.account.id_token;
-        params.user.roles =
-          params.profile?.resource_access?.exploitation?.roles ?? [];
+        params.user.roles = params.profile?.realm_access.roles ?? [];
         params.token.accessTokenExpired =
           Date.now() + (params.account.expires_in - 15) * 1000;
         params.token.refreshTokenExpired =
