@@ -4,6 +4,7 @@ import axios from "axios";
 
 interface Dei {
   id: number;
+  status: boolean;
   sashaStatus: boolean;
 }
 
@@ -49,7 +50,7 @@ const Page = () => {
             </select>
           </div>
           <ul className="task-list">
-            {data.map((item: { id: number; sashaStatus: boolean }) => (
+            {data.map((item) => (
               <li
                 key={item.id}
                 className={`bg-[#f0f2fc] ${
@@ -58,7 +59,7 @@ const Page = () => {
                 onClick={() => handleItemClick(item.id)}
               >
                 <h4>Tâche n°{item.id}</h4>
-                {item.sashaStatus ? "Complété" : "En cours"}
+                {item.status ? "Complété" : "En cours"}
               </li>
             ))}
           </ul>
@@ -99,7 +100,7 @@ const Page = () => {
                     className="rounded-md border border-black px-1 py-2"
                   />
                 </div>
-                <div className="relative">
+                <div className="relative w-16">
                   <label
                     htmlFor="priority"
                     className="absolute -top-2 left-2 bg-white px-1 text-xs transition-all duration-200 ease-in-out peer-placeholder-shown:top-2 peer-placeholder-shown:scale-100 peer-placeholder-shown:opacity-100 peer-focus:top-1 peer-focus:scale-75 peer-focus:opacity-100"
