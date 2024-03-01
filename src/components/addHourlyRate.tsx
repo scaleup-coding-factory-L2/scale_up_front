@@ -30,25 +30,29 @@ const AddHourlyRateForm = () => {
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    try {
-      const hourlyRateData = {
-        level,
-        subjectId: parseInt(selectedSubjectId as string),
-        rate: parseFloat(rate),
-        realrate: parseFloat(realrate),
-      };
 
-      await axios.post('http://localhost:3000/hourlyRateRoutes/addHourlyRate', hourlyRateData);
-      alert('Hourly rate added successfully');
-      setLevel('');
-      setSelectedSubjectId('');
-      setRate('');
-      setRealRate('');
+    const realRateValue = realrate || rate;
+
+    try {
+        const hourlyRateData = {
+            level,
+            subjectId: parseInt(selectedSubjectId as string),
+            rate: parseFloat(rate),
+            realrate: parseFloat(realRateValue), 
+        };
+
+        await axios.post('http://localhost:3000/hourlyRateRoutes/addHourlyRate', hourlyRateData);
+        alert('Hourly rate added successfully');
+        setLevel('');
+        setSelectedSubjectId('');
+        setRate('');
+        setRealRate('');
     } catch (error) {
-      console.error('Failed to add hourly rate:', error);
-      alert('Failed to add hourly rate');
+        console.error('Failed to add hourly rate:', error);
+        alert('Failed to add hourly rate');
     }
-  };
+};
+
 
   return (
     <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', marginTop: '50px' }}>
@@ -99,7 +103,6 @@ const AddHourlyRateForm = () => {
           id="realrate"
           value={realrate}
           onChange={(e) => setRealRate(e.target.value)}
-          required
           step="0.01"
           style={{ margin: '10px', padding: '10px' }}
         />
