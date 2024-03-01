@@ -64,7 +64,7 @@ const HourlyRatesComponent = () => {
             <ul>
                 {rates.map((rate) => (
                     <li key={rate.id}>
-                        Level: {rate.level}, Subject: {rate.subjectId ? getSubjectNameById(rate.subjectId) : 'N/A' }, Rate: {rate.rate}, Real Rate: {rate.realrate}
+                        Level: {rate.level}, Subject: {rate.subjectId ? getSubjectNameById(rate.subjectId) : 'N/A' }, Rate: {rate.rate} €, Real Rate: {rate.realrate} € 
                         <button onClick={() => deleteRate(rate.id)}> Delete</button>
                     </li>
                 ))}

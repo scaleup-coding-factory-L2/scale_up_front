@@ -47,13 +47,13 @@ const GetAllRateCalculeComponenent = () => {
       <ul>
         {rates.map((rate, index) => (
           <li key={index}>
-            Rate: {rate.rate}, Real Rate: {rate.realrate}
+            Rate: {rate.rate}€, Real Rate: {rate.realrate}€
           </li>
         ))}
       </ul>
-      <div>Total Rate: {totalRate}</div>
-      <div>Total Real Rate: {totalRealRate}</div>
-      <div>Difference: {difference >= 0 ? difference : `(${difference})`}</div>
+      <div>Total Rate: {totalRate}€ </div>
+      <div>Total Real Rate: {totalRealRate}€ </div>
+      <div>Difference: {difference >= 0 ? difference : `(${difference})`}€ </div>
     </div>
   );
 };
