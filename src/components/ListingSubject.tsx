@@ -4,6 +4,8 @@ import axios from 'axios';
 import ReturnCategory from './CategoryForSubject';
 import DeleteASubject from './DeleteASubject';
 import FormUpdateSubject from './FormUpdateSubject';
+import FormCreateSubject from './FormCreateSubject';
+
 interface Subjects {
   id: number;
   name: string;
@@ -11,19 +13,17 @@ interface Subjects {
   categoryId: number;
 }
 
-
 const ListingSubject = () => {
   const [subjects, setSubjects] = useState<Subjects[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await axios.get('http://localhost:3000/sub/subject');
+      const { data } = await axios.get('http://localhost:3000/api/subject/subject');
       setSubjects(data);
     };
 
     fetchData();
   }, []);
-
 
   if (subjects.length === 0) return <h2>Il n y a aucun sujet dans la base de données.</h2>;
 
@@ -54,6 +54,7 @@ const ListingSubject = () => {
           ))}
         </tbody>
       </table>
+      <FormCreateSubject/>
     </div>
   );
 };

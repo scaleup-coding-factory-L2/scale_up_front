@@ -4,7 +4,7 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 import DeleteACategory from './DeleteACategory';
 import FormUpdateCategory from './FormUpdateCategory';
-
+import FormCreateCategory from "./FormCreateCategory";
 
 interface Category {
     id:number
@@ -15,7 +15,7 @@ interface Category {
 const ListingCategory = () => {
   const [categorys, setCategorys] = useState<Category[]>([]);
 
-  const apiEndPoint = "http://localhost:3000/cat/category";
+  const apiEndPoint = "http://localhost:3000/api/category/category";
   useEffect(() => {
     const getCategorys = async () => {
       const { data: res } = await axios.get(apiEndPoint);
@@ -53,6 +53,7 @@ const ListingCategory = () => {
             ))}
           </tbody>
         </table>
+        <FormCreateCategory />
       </div>
     </>
   );

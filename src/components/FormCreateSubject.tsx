@@ -26,7 +26,7 @@ function FormCreateSubject() {
     const [CategoryTable, setCategoryTable] = useState<{ id: number, name: string }[]>([]);
     useEffect(() => {
         const fetchData = async () => {
-          const response = await axios.get('http://localhost:3000/cat/category');
+          const response = await axios.get('http://localhost:3000/api/category/category');
           setCategoryTable(response.data);
         };
     
@@ -47,7 +47,7 @@ function FormCreateSubject() {
             if(subjectLevel!==""){
                 if(subjectCategoryId!==undefined){
                     const newSubject: Subject = { name: subjectName, level: subjectLevel, categoryId:subjectCategoryId};
-                    await axios.post('http://localhost:3000/sub/subject', newSubject);
+                    await axios.post('http://localhost:3000/api/subject/subject/', newSubject);
                     setSubjects([...subjects, newSubject]);
                     setSubjectName("");
                     setSubjectLevel("");

@@ -19,7 +19,7 @@ export default function FormUpdateCategory(props:Category) {
     const addCategory = async () => {
         if(categoryName!=null||categoryName!=""||categoryName!=undefined){
             const updateCategory: Category = { name: categoryName };
-            await axios.put('http://localhost:3000/cat/category'+'/'+props.categoryId, updateCategory);
+            await axios.put('http://localhost:3000/api/category/category'+'/'+props.categoryId, updateCategory);
             setCategorys([...categorys, updateCategory]);
             setCategoryName("");
         }else{
