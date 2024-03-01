@@ -4,22 +4,23 @@ import axios from 'axios';
 import 'tailwindcss/tailwind.css';
 
 const HistoriqueBesoins: React.FC = () => {
-  const [years, setYears] = useState<number[]>([]);
-  const [selectedYear, setSelectedYear] = useState<number | null>(null);
+  const [years, setYears] = useState<string[]>([]);
+  const [selectedYear, setSelectedYear] = useState<string | null>(null);
   const [needs, setNeeds] = useState<any[]>([]);
+  const api = process.env.NEXT_PUBLIC_API_URL;
 
-  const fetchYears = async () => {
-    try {
-      const response = await axios.get<number[]>('/api/years');
-      setYears(response.data);
-    } catch (error) {
-      console.error('Error fetching years:', error);
+  const fetchYears =  () => {
+    const schoolYears = [];
+    const currentYear = new Date().getFullYear();
+    for (let i = 2015; i <= currentYear + 5; i++) {
+      schoolYears.push(`${i}-${i + 1}`);
     }
+    setYears(schoolYears);
   };
 
-  const fetchNeedsByYear = async (year: number) => {
+  const fetchNeedsByYear = async (year: string) => {
     try {
-      const response = await axios.get<any[]>(`/api/needs/${year}`);
+      const response = await axios.get<any[]>(`${api}/api/needs/${year}`);
       setNeeds(response.data);
     } catch (error) {
       console.error(`Error fetching needs for year ${year}:`, error);
@@ -31,7 +32,7 @@ const HistoriqueBesoins: React.FC = () => {
   }, []);
 
   const handleYearChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
-    const selectedYear = parseInt(event.target.value);
+    const selectedYear = event.target.value;
     setSelectedYear(selectedYear);
     fetchNeedsByYear(selectedYear);
   };
