@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import NextAuthProvider from "@/app/context/NextAuthProvider";
+import Nav from "@/components/nav";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,7 +21,10 @@ export default async function RootLayout({
       <body
         className={`h-screen ${inter.className} bg-back-pattern bg-light-gray bg-background bg-cover bg-fixed bg-center bg-no-repeat font-light`}
       >
-        <NextAuthProvider>{children}</NextAuthProvider>
+        <NextAuthProvider>
+          <Nav />
+          <main>{children}</main>
+        </NextAuthProvider>
       </body>
     </html>
   );
