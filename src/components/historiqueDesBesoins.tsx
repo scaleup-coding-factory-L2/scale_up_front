@@ -57,7 +57,7 @@ const HistoriqueBesoins: React.FC = () => {
           <ul>
             {needs.map((need, index) => (
               <li key={index} className='mb-2'>
-                <span className='font-semibold'>{need.description}</span> - <span>{need.status}</span>
+                <span className='font-semibold'>Besoin n°{need.id}</span> - <span>Status :{need.status}</span>
               </li>
             ))}
           </ul>
