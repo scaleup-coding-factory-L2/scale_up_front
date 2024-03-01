@@ -1,11 +1,11 @@
 import Image from "next/image"; 
-import HourlyRatesList from "../components/modifyHourlyRate";
+import NavigationButtons from "../components/allbutton";
 
 export default function Home() {
   return (
     <div>
       <h1>Hourly Rates</h1>
-      <HourlyRatesList/>
+      <NavigationButtons/>
       <Image
         src="/vercel.svg"
         alt="Vercel Logo"

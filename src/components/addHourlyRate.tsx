@@ -3,12 +3,6 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 
-interface HourlyRate {
-  level: string;
-  rate: number;
-  realrate: number;
-}
-
 interface Subject {
   id: number;
   name: string;
