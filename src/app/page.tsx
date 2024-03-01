@@ -1,21 +1,37 @@
-// src/app/page.tsx
 'use client';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Image from 'next/image';
 import { motion } from 'framer-motion';
+import axios from 'axios';
+import RealTimeUpdate from '../components/RealTimeUpdates';
+
+interface Subject {
+  id: number;
+  name: string;
+  year: number;
+  promotion: string;
+}
 
 export default function Home() {
-  const [subjectsData] = useState([
-    { id: 1, name: 'Mathématiques', year: 2023, promotion: 'A' },
-    { id: 2, name: 'Physique', year: 2022, promotion: 'B' },
-    { id: 3, name: 'Chimie', year: 2023, promotion: 'A' },
-    // Ajoutez d'autres matières ici
-  ]);
-
-  const [filteredSubjects, setFilteredSubjects] = useState([...subjectsData]);
+  const [subjectsData, setSubjectsData] = useState<Subject[]>([]);
+  const [filteredSubjects, setFilteredSubjects] = useState<Subject[]>([]);
   const [yearFilter, setYearFilter] = useState('');
   const [promotionFilter, setPromotionFilter] = useState('');
   const [sortBy, setSortBy] = useState('name');
+
+  useEffect(() => {
+    const fetchSubjects = async () => {
+      try {
+        const response = await axios.get<Subject[]>('http://localhost:3000/api/subjects');
+        setSubjectsData(response.data);
+        setFilteredSubjects(response.data);
+      } catch (error) {
+        console.error('Error fetching subjects:', error);
+      }
+    };
+
+    fetchSubjects();
+  }, []);
 
   const handleFilter = () => {
     let filtered = [...subjectsData];
@@ -101,6 +117,7 @@ export default function Home() {
       <div className="mt-8 text-center">
         <Image src="/vercel.svg" alt="Vercel Logo" width={72} height={16} />
       </div>
+      <RealTimeUpdate />
     </div>
   );
 }
