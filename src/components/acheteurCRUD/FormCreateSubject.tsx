@@ -1,23 +1,20 @@
 'use client'
 import axios from "axios";
 import React, { useState,useEffect } from "react";
-/*model Subject {
-  id Int @id @default(autoincrement())
-  name String
-  level String
-  categoryId Int
-  syllabus Syllabus[]
-  needs Need[]
-  hourlyRates HourlyRate[]
-  category Category @relation(fields: [categoryId], references: [id])
-} */
+
+import { cn } from "@/lib/utils"
+import { Input } from "@/components/ui/input"
+import { Label } from "@/components/ui/label"
+import { CheckCircleIcon,Download } from "lucide-react";
+import { Button } from "../ui/button";
+
 interface Subject {
     name: string;
     level: string;
     categoryId: number|undefined;
 }
 
-function FormCreateSubject() {
+function FormCreateSubject({ className }: React.ComponentProps<"form">) {
     const [subjectName, setSubjectName] = useState("");
     const [subjectLevel, setSubjectLevel] = useState("");
     const [subjectCategoryId, setsubjectCategoryId] = useState<number|undefined>(undefined);
@@ -26,7 +23,7 @@ function FormCreateSubject() {
     const [CategoryTable, setCategoryTable] = useState<{ id: number, name: string }[]>([]);
     useEffect(() => {
         const fetchData = async () => {
-          const response = await axios.get('http://localhost:3000/api/category/category');
+          const response = await axios.get('http://localhost:3000/api/category');
           setCategoryTable(response.data);
         };
     
@@ -47,7 +44,7 @@ function FormCreateSubject() {
             if(subjectLevel!==""){
                 if(subjectCategoryId!==undefined){
                     const newSubject: Subject = { name: subjectName, level: subjectLevel, categoryId:subjectCategoryId};
-                    await axios.post('http://localhost:3000/api/subject/subject/', newSubject);
+                    await axios.post('http://localhost:3000/api/subject', newSubject);
                     setSubjects([...subjects, newSubject]);
                     setSubjectName("");
                     setSubjectLevel("");
@@ -65,25 +62,34 @@ function FormCreateSubject() {
     };
 
     return (
+        <div className="flex flex-row">
+            <form className={cn("flex grid items-start gap-4 mr-20", className) }>
+                <div className="grid gap-2">
+                    <Label>Name:</Label>
+                    <Input type="text" name="name" value={subjectName} onChange={handleNameChange} placeholder="write name of category here..." required/>
+                </div>
+                <div>
+                    <Label>Level:</Label>
+                    <Input type="text" name="level" value={subjectLevel} onChange={handleLevelChange} placeholder="write name of category here..." required/>
+                </div>
+                <div>
+                    <Label>Category:</Label>
+                    
+                    <select name="category" value={subjectCategoryId} onChange={handleCategoryIdChange} required>
+                        <option value="" selected>--select category--</option>
+                        {CategoryTable.map((categoryElement) => (
+                            <option key={categoryElement.id} value={categoryElement.id}>{categoryElement.name}</option>
+                        ))}
+                    </select>
+                </div>
+                <Button type="button" onClick={addSubject}><CheckCircleIcon className="mr-1"/>Valider</Button>
+            </form>
+            <div className="flex justify-center items-center  mb-3 bg-gray-200 px-10 rounded-full max-h-24	mt-16 mr-5"><Download className="flex justify-center items-center "/></div>
 
-        <form>
-            <label>Name:</label>
-            <input type="text" name="name" value={subjectName} onChange={handleNameChange} placeholder="write name of category here..." required/>
-            <br />
-            <label>Level:</label>
-            <input type="text" name="level" value={subjectLevel} onChange={handleLevelChange} placeholder="write name of category here..." required/>
-            <br />
-            <label>Category:</label>
-            <select name="category" value={subjectCategoryId} onChange={handleCategoryIdChange} required>
-                {CategoryTable.map((categoryElement) => (
-                    <option key={categoryElement.id} value={categoryElement.id}>{categoryElement.name}</option>
-                ))}
-            </select>
-            <br />
-            <button type="button" onClick={addSubject}>Submit</button>
-        </form>
+        </div>
+
     );
 }
 
-export default FormCreateSubject;
 
+export default FormCreateSubject;

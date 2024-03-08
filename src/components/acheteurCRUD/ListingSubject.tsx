@@ -1,0 +1,62 @@
+'use client'
+
+//import ReturnCategory from './CategoryForSubject';
+
+import axios from "axios";
+import { useState, useEffect } from "react";
+
+import * as React from "react"
+
+import { ScrollArea } from "@/components/ui/scroll-area"
+import { Label } from "../ui/label"
+import { Card } from "../ui/card";
+import { ButtonAddSubject } from "./ButtonAddSubject";
+interface Subjects {
+  id: number;
+  name: string;
+  level: string;
+  categoryId: number;
+}
+
+export const ListingSubject = () => {
+
+  const [subjects, setSubjects] = useState<Subjects[]>([]);
+
+  useEffect(() => {
+    const getSubjects = async () => {
+      const { data } = await axios.get('http://localhost:3000/api/subject');
+      setSubjects(data);
+    };
+
+    getSubjects();
+  }, []);
+
+  if (subjects.length === 0) {
+    return (
+      <ScrollArea className="rounded-md border bg-white	h-[600px] max-h-full pt-1">
+        <div className="overflow-auto">
+        <ButtonAddSubject/>
+
+          <Card className="bg-[#F0F2FC] mt-1 h-[100px] grid justify-items-center content-center m-2">
+            <Label className="flex text-2xl font-bold">{`Il n'y a aucune matière/module dans la base de donnée. `}</Label>
+          </Card>
+        </div>
+      </ScrollArea>
+    )
+  };
+
+
+  return (
+    <ScrollArea className="rounded-md border bg-white	h-[600px] max-h-full pt-1">
+      <div className="overflow-auto">
+        <ButtonAddSubject/>
+        {subjects.map((subject) => (
+          <Card className="bg-[#F0F2FC] mt-1 h-[100px] grid justify-items-center content-center m-2" key={subject.id}>
+            <Label className="flex text-2xl font-bold">{subject.name}</Label>
+            
+          </Card>
+            ))}
+      </div>
+    </ScrollArea>
+  )
+}

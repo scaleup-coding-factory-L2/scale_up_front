@@ -11,7 +11,7 @@ interface Subject {
 export default function DeleteASubject(props: Subject) {
  
   const handleDelete = async () => {
-      await axios.delete(`http://localhost:3000/api/subject/subject/${props.subjectid}`);
+      await axios.delete(`http://localhost:3000/api/subject/${props.subjectid}`);
   
   };
   return(

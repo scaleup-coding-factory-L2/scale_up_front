@@ -19,7 +19,7 @@ export default function FormUpdateSubject(props:Subject) {
 
     useEffect(() => {
         const fetchData = async () => {
-          const response = await axios.get('http://localhost:3000/api/category/category');
+          const response = await axios.get('http://localhost:3000/api/category');
           setCategoryTable(response.data);
         };
         fetchData();
@@ -41,7 +41,7 @@ export default function FormUpdateSubject(props:Subject) {
                 if(subjectCategoryId!==undefined){
                     const updateSubject: Subject = { name: subjectName, level: subjectLevel, categoryId:subjectCategoryId};
                     console.log('put',updateSubject)
-                    await axios.put('http://localhost:3000/api/subject/subject/'+props.id, updateSubject);
+                    await axios.put('http://localhost:3000/api/subject/'+props.id, updateSubject);
                     setSubjects([...subjects, updateSubject]);
                     setSubjectName("");
                     setSubjectLevel("");

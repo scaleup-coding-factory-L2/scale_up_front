@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+import { Label } from '@radix-ui/react-label';
 
 interface Category {
   categoryId: number;
@@ -11,7 +12,7 @@ const ReturnCategory = ({ categoryId }: Category) => {
 
   useEffect(() => {
     const fetchCategory = async () => {
-      const { data } = await axios.get(`http://localhost:3000/api/category/category/${categoryId}`);
+      const { data } = await axios.get(`http://localhost:3000/api/category/${categoryId}`);
       setCategory(data[0]);
     };
 
@@ -21,7 +22,7 @@ const ReturnCategory = ({ categoryId }: Category) => {
     <div>
       {category ? (
         <div>
-          <td>{category.name}</td>
+          <Label>Catégorie: {category.name}</Label>
         </div>
       ) : (
         <p>Loading...</p>
