@@ -27,8 +27,7 @@ export default function ImportSpreadSheetButton() {
             const jsonData = await fileReaderTool.parseExcel(file);
             setData(jsonData);
         } else {
-            console.log('File type not supported');
-
+            setError('Le format du fichier n\'est pas correcte. Veuillez vérifier le format du fichier.');
         }
         
         setPopup(true);
