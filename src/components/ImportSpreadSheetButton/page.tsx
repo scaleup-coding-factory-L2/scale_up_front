@@ -26,10 +26,16 @@ export default function ImportSpreadSheetButton() {
         setPopup(true);
     }
 
+    const onSave = (data: string) => {
+        setData(data);
+        console.log(data);
+        
+    }
+
 
     return (
         <>
-        {popup && <PopUpEditionList data={data} onClose={() =>{ setPopup(false); setData('')}}/>}
+        {popup && <PopUpEditionList data={data} onClose={() =>{ setPopup(false); setData('')}} onSave={() => onSave}/>}
             <div>
                 <input type="file" onChange={(e: ChangeEvent<HTMLInputElement>) => handleFileUpload(e.target.files && e.target.files[0])} accept=".csv, application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" />
             </div>
