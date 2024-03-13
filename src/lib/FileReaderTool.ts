@@ -51,6 +51,20 @@ class FileReaderTool {
             reader.readAsText(file);
         });
     }
+
+    public CheckNumberOfColumns(data: string): number {
+        const dataParse = JSON.parse(data);
+        
+        dataParse.forEach((item: { [x: string]: unknown; }) => {
+            Object.keys(item).forEach(key => {
+                if (item[key] === '') {
+                    delete item[key];
+                }
+            });
+        });
+        
+        return Object.keys(dataParse[0]).length;
+    }
 }
 
 export default FileReaderTool;
