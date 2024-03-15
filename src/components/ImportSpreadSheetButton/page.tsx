@@ -2,6 +2,7 @@
 import { useState, ChangeEvent } from 'react';
 import FileReaderTool from '@/lib/FileReaderTool';
 import PopUpEditionList from '@/components/PopUpEditionList/PopUpEditionList';
+import axios from 'axios';
 
 export default function ImportSpreadSheetButton() {
     const [data, setData] = useState<string>('');
@@ -31,7 +32,7 @@ export default function ImportSpreadSheetButton() {
                 setError('Le format du fichier n\'est pas correcte. Veuillez vérifier le nombre de colonnes.');
                 return;
             }
-            
+
             setData(jsonData);
         } else {
             setError('Le format du fichier n\'est pas correcte. Veuillez vérifier le format du fichier.');
@@ -40,10 +41,43 @@ export default function ImportSpreadSheetButton() {
         setPopup(true);
     }
 
-    const onSave = (data: string) => {
-        setData(data);
-        console.log(data);
+    interface LogItem {
+        value: string;
+    }
+    
+    interface ConvertedData {
+        promo: string;
+        course: string;
+        listOfDate: string[];
+    }
 
+
+    const onSave = async (data: string) => {
+        const dataParse = JSON.parse(data);
+
+        const convertLogToData = (log: LogItem[]): ConvertedData => {
+            const promo = log[0]?.value || "";
+            const course = log[1]?.value || "";
+            const listOfDate = log[2]?.value?.split(',').map((date: string) => date.trim()) || [];
+            return { promo, course, listOfDate };
+        };
+    
+        const convertedDataArray = dataParse.map((item: LogItem[]) => {
+            return convertLogToData(item);
+        });        
+        
+       
+         const response = await axios.post('http://localhost:3000/api/administrative/export', { 
+            data: JSON.stringify(convertedDataArray),
+            headers: {
+                'Content-Type': 'application/json',
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST',
+            }
+        })        
+
+        console.log(response);
+        
     }
 
     const onClose = () => {
