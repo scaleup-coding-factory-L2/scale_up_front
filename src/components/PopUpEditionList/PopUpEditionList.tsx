@@ -33,7 +33,7 @@ const PopUpEditionList = ({ data, onClose, onSave }: PopUpEditionListProps) => {
 
     return (
         <div className='absolute min-w-full min-h-full bg-black bg-opacity-70 flex justify-center items-center'>
-            <div className='bg-white p-8 flex flex-col'>
+            <div className='bg-transparent p-8 flex flex-col'>
                 <Spreadsheet darkMode={false} data={content} onChange={(event) => { setContent(event); }}/>
                 <div className='mt-2 flex items-center justify-end'>
                     <button onClick={() => onClose()} className='focus:outline-none text-white bg-red-700 hover:bg-red-800 focus:ring-4 focus:ring-red-300 font-medium rounded-lg text-sm px-5 py-2.5 me-2 mb-2 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-900'>Close</button>
