@@ -83,6 +83,8 @@ export default function ImportSpreadSheetButton() {
     const onClose = () => {
         setPopup(false);
         setData('');
+        const input = document.getElementById('dropzone-file') as HTMLInputElement;
+        input.value = '';
     }
 
 
