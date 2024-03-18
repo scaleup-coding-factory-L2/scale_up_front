@@ -25,7 +25,7 @@ const ReturnCategory = ({ categoryId }: Category) => {
           <Label>Catégorie: {category.name}</Label>
         </div>
       ) : (
-        <p>Loading...</p>
+        <Label>Loading...</Label>
       )}
     </div>
   );

@@ -1,8 +1,21 @@
 "use strict";
 
-import * as React from "react"
+import React, { useState } from "react";
 import { TypeList } from "@/components/acheteurCRUD/TypeList";
+import { ElementFormSelect } from "@/components/acheteurCRUD/ElementFormSelect";
+
 const AcheteurPage = () => {
+
+  const [selectedInt, setSelectedInt] = useState<number | null>(null);
+  const [selectedType, setSelectedType] = useState<string>("category");
+  const handleSelectedCard = (valeur: number) => {
+    setSelectedInt(valeur);
+  };
+  const handleTypeCard = (valeur: string) => {
+    setSelectedType(valeur)
+  };
+console.log(selectedInt)
+console.log(selectedType)
     return (
       <div className="flex flex-row">
         <div className="ml-48">
@@ -15,11 +28,11 @@ const AcheteurPage = () => {
             <p>Choix type liste</p>
           </div>
           <div>
-            <TypeList/>
+            <TypeList SelectElement={handleSelectedCard} TypeElement={handleTypeCard} />
           </div>
         </div>
         <div>
-          <p>Affichage élément sélectionné de la liste</p>
+          <ElementFormSelect TypeCard={selectedType} IdCard={selectedInt}/>
         </div>
       </div>
     );

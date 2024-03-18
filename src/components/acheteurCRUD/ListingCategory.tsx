@@ -9,12 +9,18 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Label } from "../ui/label"
 import { Card } from "../ui/card";
 import { ButtonAddCategory } from "./ButtonAddCategory";
-interface Category {
+
+export interface Category {
     id:number
     name: string;
 }
 
-const ListingCategory = () => {
+interface ListingCategoryProps {
+  onCategorySelect: (categoryId: number) => void;
+}
+
+const ListingCategory = ({ onCategorySelect }: ListingCategoryProps)  => {
+
   const [categorys, setCategorys] = useState<Category[]>([]);
 
   const apiEndPoint = "http://localhost:3000/api/category";
@@ -26,7 +32,11 @@ const ListingCategory = () => {
     getCategorys();
   }, []);
 
-  console.log('test',categorys)
+
+  const handleCategoryCard = (categoryId: number) => {
+    onCategorySelect(categoryId); // Appel de la fonction de rappel pour transmettre l'id sélectionné au parent
+};
+
   return (
     <ScrollArea className="rounded-md border bg-white	h-[600px] max-h-full pt-1">
       {categorys.length===0 ?
@@ -38,7 +48,7 @@ const ListingCategory = () => {
       <div className="overflow-auto">
         <ButtonAddCategory/>
         {categorys.map((category) => (
-          <Card className="bg-[#F0F2FC] mt-1 h-[100px] grid justify-items-center content-center m-2" key={category.id}>
+          <Card className="bg-[#F0F2FC] mt-1 h-[100px] grid justify-items-center content-center m-2" key={category.id} onClick={() => handleCategoryCard(category.id)}>
             <Label className="flex text-2xl font-bold">{category.name}</Label>
           </Card>
             ))}

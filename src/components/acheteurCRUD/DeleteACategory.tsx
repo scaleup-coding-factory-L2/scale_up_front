@@ -15,7 +15,7 @@ interface Subject {
 export default function DeleteACategory(props: Category) {
   const [subjectUsCategory, setSubjectUsCategory] = useState<Subject[]>([]);
 
-  const apiEndPoint = `http://localhost:3000/api/subject/${props.categoryId}`;
+  const apiEndPoint = `http://localhost:3000/api/subject/category/${props.categoryId}`;
   useEffect(() => {
     const getCategorys = async () => {
       const { data: res } = await axios.get(apiEndPoint);
@@ -23,7 +23,6 @@ export default function DeleteACategory(props: Category) {
     };
     getCategorys();
   }, [apiEndPoint]);
-  console.log('testing:',subjectUsCategory);
   const handleDelete = async () => {
     if(subjectUsCategory.length === 0){
       await axios.delete(`http://localhost:3000/api/category/${props.categoryId}`);

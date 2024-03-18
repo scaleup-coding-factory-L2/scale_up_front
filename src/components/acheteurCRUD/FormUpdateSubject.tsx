@@ -40,7 +40,6 @@ export default function FormUpdateSubject(props:Subject) {
             if(subjectLevel!==""){
                 if(subjectCategoryId!==undefined){
                     const updateSubject: Subject = { name: subjectName, level: subjectLevel, categoryId:subjectCategoryId};
-                    console.log('put',updateSubject)
                     await axios.put('http://localhost:3000/api/subject/'+props.id, updateSubject);
                     setSubjects([...subjects, updateSubject]);
                     setSubjectName("");
