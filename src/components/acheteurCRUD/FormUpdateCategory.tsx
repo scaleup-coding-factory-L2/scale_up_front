@@ -2,6 +2,12 @@
 
 import axios from 'axios';
 import React,{useState} from 'react';
+import { Button } from '../ui/button';
+import { Input } from '../ui/input';
+import { Label } from '../ui/label';
+import { CheckCircleIcon,Download } from 'lucide-react';
+import { cn } from "@/lib/utils"
+
 
 interface Category {
     categoryId?:number;
@@ -16,7 +22,7 @@ export default function FormUpdateCategory(props:Category) {
         setCategoryName(event.target.value);
     };
 
-    const addCategory = async () => {
+    const updateCategory = async () => {
         if(categoryName!=null||categoryName!=""||categoryName!=undefined){
             const updateCategory: Category = { name: categoryName };
             await axios.put('http://localhost:3000/api/category'+'/'+props.categoryId, updateCategory);
@@ -29,12 +35,17 @@ export default function FormUpdateCategory(props:Category) {
     };
   return(
     <>
-      <form>
-            <label>Name:</label>
-            <input type="text" name="name" value={categoryName} onChange={handleNameChange} placeholder="write name of category here..."/>
-            <br />
-            <button type="button" onClick={addCategory}>Submit</button>
-        </form>
+      <div className="flex flex-row">
+            <form className={cn("flex grid items-start gap-4 mr-20") }>
+                <div className="grid gap-2">
+                    <Label>Name:</Label>
+                    <Input type="text" name="name" value={categoryName} onChange={handleNameChange} placeholder="write name of category here..."/>
+                </div>
+                    <Button type="button" onClick={updateCategory}><CheckCircleIcon className="mr-1"/>Valider</Button>
+
+            </form>
+            <div className="flex justify-center items-center  mb-3 bg-gray-200 px-10 rounded-full"><Download className="flex justify-center items-center "/></div>
+        </div>
     </>
     )
 }

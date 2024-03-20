@@ -2,7 +2,11 @@
 
 import axios from 'axios';
 import React,{useState,useEffect} from 'react';
-
+import { Button } from '../ui/button';
+import { CheckCircleIcon, Download } from 'lucide-react';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
+import { cn } from '@/lib/utils';
 interface Subject {
     id?:number;
     name: string;
@@ -35,7 +39,7 @@ export default function FormUpdateSubject(props:Subject) {
         setSubjectCategoryId(parseInt(event.target.value, 10));
     };
 
-    const addSubject = async () => {
+    const updateSubject = async () => {
         if(subjectName!==""){
             if(subjectLevel!==""){
                 if(subjectCategoryId!==undefined){
@@ -58,21 +62,29 @@ export default function FormUpdateSubject(props:Subject) {
 
   return(
     <>
-      <form>
-            <label>Name:</label>
-            <input type="text" name="name" value={subjectName} onChange={handleNameChange} placeholder="write name of category here..."/>
-            <br />
-            <label>Level:</label>
-            <input type="text" name="level" value={subjectLevel} onChange={handleLevelChange} placeholder="write level of category here..."/>
-            <br />
-            <label>Category:</label>
-            <select name="category" value={subjectCategoryId} onChange={handleCategoryIdChange} required>
-                {CategoryTable.map((categoryElement) => (
-                    <option key={categoryElement.id} value={categoryElement.id}>{categoryElement.name}</option>
-                ))}
-            </select>            
-            <button type="button" onClick={addSubject}>Submit</button>
-        </form>
+      <div className="flex flex-row">
+            <form className={cn("flex grid items-start gap-4 mr-20") }>
+                <div className="grid gap-2">
+                    <Label>Name:</Label>
+                    <Input type="text" name="name" value={subjectName} onChange={handleNameChange} placeholder="write name of category here..." required/>
+                </div>
+                <div>
+                    <Label>Level:</Label>
+                    <Input type="text" name="level" value={subjectLevel} onChange={handleLevelChange} placeholder="write name of category here..." required/>
+                </div>
+                <div>
+                    <Label>Category:</Label>    
+                    <select name="category" value={subjectCategoryId} onChange={handleCategoryIdChange} required>
+                        <option value={props.categoryId} selected>--select new category--</option>
+                        {CategoryTable.map((categoryElement) => (
+                            <option key={categoryElement.id} value={categoryElement.id}>{categoryElement.name}</option>
+                        ))}
+                    </select>
+                </div>       
+            <Button type="button" onClick={updateSubject}><CheckCircleIcon className="mr-1"/>Valider</Button>
+            </form>
+            <div className="flex justify-center items-center  mb-3 bg-gray-200 px-10 rounded-full max-h-24	mt-16 mr-5"><Download className="flex justify-center items-center "/></div>
+        </div>
     </>
     )
 }

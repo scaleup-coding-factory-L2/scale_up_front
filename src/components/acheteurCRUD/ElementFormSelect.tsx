@@ -11,6 +11,8 @@ import { useState,useEffect } from "react"
 import axios from "axios"
 import ReturnCategory from "./CategoryForSubject"
 import { Label } from "../ui/label"
+import { ButtonUpdateCategory } from "./ButtonUpdateCategory"
+import { ButtonUpdateSubject } from "./ButtonUpdateSubject"
 type CardProps = React.ComponentProps<typeof Card>
 
 interface TypeCardInterface{
@@ -22,9 +24,7 @@ export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterfac
     const [cardSubject, setCardSubject] = useState<Subjects[]>([]);
     const [cardCategory, setCardCategory] = useState<Category[]>([]);
     useEffect(() => {
-        if(TypeCard===null){
-            console.log("null")
-        }else if (TypeCard === "subject") {
+        if (TypeCard === "subject") {
             if(IdCard!==null){
                 const apiEndPoint = `http://localhost:3000/api/subject/${IdCard}`;
                 const getCard = async () => {
@@ -47,14 +47,14 @@ export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterfac
                 getCard();
             }
         }
-    }, [TypeCard, IdCard]); 
+    }, [TypeCard, IdCard, cardSubject, cardCategory]); 
 
     
     if (TypeCard === "category") {
         return (
           <>
             {cardCategory.length > 0 && (
-              <Card className={cn("w-[780px] h-[780px]", className)} {...props}>
+              <Card className={cn("w-[780px] h-[635px] mt-11", className)} {...props}>
                 <CardHeader>
                   <CardTitle>Description de categorie</CardTitle>
                 </CardHeader>
@@ -65,10 +65,11 @@ export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterfac
                     </p>
                   </div>
                 </CardContent>
+                <ButtonUpdateCategory name={cardCategory[0].name} id={cardCategory[0].id}/>
               </Card>
             )}
             {cardCategory.length === 0 && (
-              <Card className={cn("w-[780px] h-[780px]", className)} {...props}>
+              <Card className={cn("w-[780px] h-[635px] mt-11", className)} {...props}>
                 <CardHeader>
                   <CardTitle>Description de categorie</CardTitle>
                 </CardHeader>
@@ -87,7 +88,7 @@ export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterfac
         return (
           <>
             {cardSubject.length > 0 && (
-              <Card className={cn("w-[780px] h-[780px]", className)} {...props}>
+              <Card className={cn("w-[780px] h-[635px] mt-11", className)} {...props}>
                 <CardHeader>
                   <CardTitle>Description de matière/module</CardTitle>
                 </CardHeader>
@@ -104,6 +105,8 @@ export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterfac
                     </Label>
                   </div>
                 </CardContent>
+                <ButtonUpdateSubject id={cardSubject[0].id} name={cardSubject[0].name} level={cardSubject[0].level} categoryId={cardSubject[0].categoryId}/>
+
               </Card>
             )}
           </>

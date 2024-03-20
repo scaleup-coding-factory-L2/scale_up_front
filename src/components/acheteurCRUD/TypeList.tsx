@@ -19,7 +19,7 @@ interface TypeListProps{
 export const TypeList:React.FC<TypeListProps> = ({ SelectElement, TypeElement }) => 
 {
     //const [elementSelect, setElementSelect] = useState<number|null>();
-    const [categorySelect,setCategorySelect]=useState<string>('none');
+    const [categorySelect,setCategorySelect]=useState<string>('category');
 
     const handleReturnSelectElement = (element:number,typeElement:string)=>{
         SelectElement && SelectElement(element);
@@ -49,9 +49,9 @@ export const TypeList:React.FC<TypeListProps> = ({ SelectElement, TypeElement })
   return (
     <Tabs defaultValue="category" className="w-[400px]">
       <TabsList className="grid w-full grid-cols-3">
-        <TabsTrigger value="subject"  onClick={() => handleTabsTriggerClick('subject')}>Matières/Modules</TabsTrigger>
+        <TabsTrigger value="subject"  onClick={() => handleTabsTriggerClick('subject')}>Matière/Module</TabsTrigger>
         <TabsTrigger value="category" onClick={() => handleTabsTriggerClick('category')}>Catégorie</TabsTrigger>
-        <TabsTrigger value="place" onClick={() => handleTabsTriggerClick('place')}>{`Lieu d'enseignements`}</TabsTrigger>
+        <TabsTrigger value="place" onClick={() => handleTabsTriggerClick('place')}>{`Lieu d'enseignement`}</TabsTrigger>
       </TabsList>
       <TabsContent value="subject">
         <Card>
