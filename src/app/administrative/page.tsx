@@ -1,5 +1,5 @@
 "use client"
-import ImportSpreadSheetButton from "@/components/ImportSpreadSheetButton/page"
+import ImportSpreadSheetButton from "@/components/ImportSpreadSheetButton/ImportSpreadSheetButton"
 
 export default function Page() {
     return (
