@@ -67,7 +67,7 @@ export default function ImportSpreadSheetButton() {
         });
 
 
-        const response = await axios.post('http://localhost:3000/administrative/export', {
+        const response = await axios.post('http://localhost:3000/api/administrative/export', {
             data: JSON.stringify(convertedDataArray),
             headers: {
                 'Content-Type': 'application/json',
