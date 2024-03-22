@@ -12,8 +12,8 @@ import { Label } from "@radix-ui/react-label"
 import { useState } from "react"
 
 interface TypeListProps{
-    SelectElement?: (valeur: number) => void;
-    TypeElement?:(valeur:string)=>void;
+    SelectElement?: (valeur?: number) => void;
+    TypeElement?:(valeur?:string)=>void;
 }
 
 export const TypeList:React.FC<TypeListProps> = ({ SelectElement, TypeElement }) => 
@@ -21,13 +21,13 @@ export const TypeList:React.FC<TypeListProps> = ({ SelectElement, TypeElement })
     //const [elementSelect, setElementSelect] = useState<number|null>();
     const [categorySelect,setCategorySelect]=useState<string>('category');
 
-    const handleReturnSelectElement = (element:number,typeElement:string)=>{
+    const handleReturnSelectElement = (element?:number,typeElement?:string)=>{
         SelectElement && SelectElement(element);
         TypeElement && TypeElement(typeElement);
         console.log("test222",element)
     }
 
-    const handleCategorySelect = (categoryId: number) => {
+    const handleCategorySelect = (categoryId?: number) => {
         if(categorySelect=="category"){
             handleReturnSelectElement(categoryId,categorySelect)
             console.log("test333",categoryId)

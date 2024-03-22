@@ -11,12 +11,12 @@ import { Card } from "../ui/card";
 import { ButtonAddCategory } from "./ButtonAddCategory";
 
 export interface Category {
-    id:number
-    name: string;
+    id?:number
+    name?: string;
 }
 
 interface ListingCategoryProps {
-  onCategorySelect: (categoryId: number) => void;
+  onCategorySelect: (categoryId?: number) => void;
 }
 
 const ListingCategory = ({ onCategorySelect }: ListingCategoryProps)  => {
@@ -33,7 +33,7 @@ const ListingCategory = ({ onCategorySelect }: ListingCategoryProps)  => {
   }, []);
 
 
-  const handleCategoryCard = (categoryId: number) => {
+  const handleCategoryCard = (categoryId?: number) => {
     onCategorySelect(categoryId); // Appel de la fonction de rappel pour transmettre l'id sélectionné au parent
 };
 

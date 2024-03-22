@@ -13,11 +13,14 @@ const ReturnCategory = ({ categoryId }: Category) => {
   useEffect(() => {
     const fetchCategory = async () => {
       const { data } = await axios.get(`http://localhost:3000/api/category/${categoryId}`);
-      setCategory(data[0]);
+      setCategory(data);
+      console.log('really',data)
     };
 
     fetchCategory();
   }, [categoryId]);
+  console.log('testcaztegoryID',categoryId)
+  console.log('testttttttt',category)
   return (
     <div>
       {category ? (

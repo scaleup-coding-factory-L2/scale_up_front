@@ -39,7 +39,7 @@ export function ButtonUpdateCategory(props:Category) {
             <DialogTitle>Modifié la catégorie {props.name}</DialogTitle>
             
           </DialogHeader>
-          <FormUpdateCategory categoryId={props.id} name={props.name}/>
+          <FormUpdateCategory id={props.id} name={props.name}/>
         </DialogContent>
       </Dialog>
     )
@@ -54,7 +54,7 @@ export function ButtonUpdateCategory(props:Category) {
         <DrawerHeader className="text-left">
           <DrawerTitle>Modifié la catégorie {props.name}</DrawerTitle>
         </DrawerHeader>
-        <FormUpdateCategory  categoryId={props.id} name={props.name}/>
+        <FormUpdateCategory  id={props.id} name={props.name}/>
         <DrawerFooter className="pt-2">
           <DrawerClose asChild>
             <Button className="bg-blue-700  rounded-full">Cancel</Button>

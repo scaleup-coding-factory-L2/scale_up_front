@@ -13,19 +13,20 @@ import ReturnCategory from "./CategoryForSubject"
 import { Label } from "../ui/label"
 import { ButtonUpdateCategory } from "./ButtonUpdateCategory"
 import { ButtonUpdateSubject } from "./ButtonUpdateSubject"
-type CardProps = React.ComponentProps<typeof Card>
+//type CardProps = React.ComponentProps<typeof Card>
 
 interface TypeCardInterface{
-    TypeCard:string;
-    IdCard:number|null;
+    TypeCard?:string;
+    IdCard?:number|null;
 }
 
-export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterface ,{  className, ...props }: CardProps) {
-    const [cardSubject, setCardSubject] = useState<Subjects[]>([]);
-    const [cardCategory, setCardCategory] = useState<Category[]>([]);
+export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterface) {
+    const [cardSubject, setCardSubject] = useState<Subjects>();
+    const [cardCategory, setCardCategory] = useState<Category>();
     useEffect(() => {
+      
         if (TypeCard === "subject") {
-            if(IdCard!==null){
+            if(IdCard!==null&&IdCard!==cardSubject?.id){
                 const apiEndPoint = `http://localhost:3000/api/subject/${IdCard}`;
                 const getCard = async () => {
                     const { data: res } = await axios.get(apiEndPoint);
@@ -36,12 +37,13 @@ export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterfac
                 getCard();
             }
         } else if (TypeCard === "category") {
-            if(IdCard!==null){
+            if(IdCard!==null&&IdCard!==cardCategory?.id){
                 const apiEndPointCardCategory = `http://localhost:3000/api/category/${IdCard}`;
                 const getCard = async () => {
                     const { data: res } = await axios.get(apiEndPointCardCategory);
                     setCardCategory(res);
                     console.log('idCategory',IdCard)
+                    console.log('test',res)
                     console.log('testcategory',cardCategory)
                 };
                 getCard();
@@ -53,23 +55,24 @@ export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterfac
     if (TypeCard === "category") {
         return (
           <>
-            {cardCategory.length > 0 && (
-              <Card className={cn("w-[780px] h-[635px] mt-11", className)} {...props}>
+            {cardCategory !==undefined && (
+              <Card className={cn("w-[780px] h-[635px] mt-11", )}>
                 <CardHeader>
                   <CardTitle>Description de categorie</CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   <div className="flex items-center space-x-4 rounded-md border p-4">
                     <p className="text-sm text-muted-foreground">
-                      {cardCategory[0].name}
+                      {cardCategory?.name}
                     </p>
                   </div>
                 </CardContent>
-                <ButtonUpdateCategory name={cardCategory[0].name} id={cardCategory[0].id}/>
+                <ButtonUpdateCategory name={cardCategory?.name} id={cardCategory?.id}/>
               </Card>
             )}
-            {cardCategory.length === 0 && (
-              <Card className={cn("w-[780px] h-[635px] mt-11", className)} {...props}>
+            {cardCategory===undefined && (
+
+              <Card className={cn("w-[780px] h-[635px] mt-11")} >
                 <CardHeader>
                   <CardTitle>Description de categorie</CardTitle>
                 </CardHeader>
@@ -87,25 +90,25 @@ export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterfac
       } else if (TypeCard === "subject") {
         return (
           <>
-            {cardSubject.length > 0 && (
-              <Card className={cn("w-[780px] h-[635px] mt-11", className)} {...props}>
+            {cardSubject!==undefined && (
+              <Card className={cn("w-[780px] h-[635px] mt-11")}>
                 <CardHeader>
                   <CardTitle>Description de matière/module</CardTitle>
                 </CardHeader>
                 <CardContent className="grid gap-4">
                   <div className="flex items-center space-x-4 rounded-md border p-4">
                     <Label className="text-sm text-muted-foreground">
-                      Nom: {cardSubject[0].name}
+                      Nom: {cardSubject.name}
                     </Label>
                     <br />
-                    <ReturnCategory categoryId={cardSubject[0].categoryId} />
+                    <ReturnCategory categoryId={cardSubject.categoryId} />
                     <br />
                     <Label className="text-sm text-muted-foreground">
-                      Level: {cardSubject[0].level}
+                      Level: {cardSubject.level}
                     </Label>
                   </div>
                 </CardContent>
-                <ButtonUpdateSubject id={cardSubject[0].id} name={cardSubject[0].name} level={cardSubject[0].level} categoryId={cardSubject[0].categoryId}/>
+                <ButtonUpdateSubject id={cardSubject.id} name={cardSubject.name} level={cardSubject.level} categoryId={cardSubject.categoryId}/>
 
               </Card>
             )}

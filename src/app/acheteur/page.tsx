@@ -6,12 +6,12 @@ import { ElementFormSelect } from "@/components/acheteurCRUD/ElementFormSelect";
 
 const AcheteurPage = () => {
 
-  const [selectedInt, setSelectedInt] = useState<number | null>(null);
-  const [selectedType, setSelectedType] = useState<string>("category");
-  const handleSelectedCard = (valeur: number) => {
+  const [selectedInt, setSelectedInt] = useState<number | null | undefined>(null);
+  const [selectedType, setSelectedType] = useState<string|undefined>("category");
+  const handleSelectedCard = (valeur?: number) => {
     setSelectedInt(valeur);
   };
-  const handleTypeCard = (valeur: string) => {
+  const handleTypeCard = (valeur?: string) => {
     setSelectedType(valeur)
   };
 console.log(selectedInt)
