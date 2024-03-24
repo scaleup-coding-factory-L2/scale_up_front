@@ -10,6 +10,7 @@ import { ScrollArea } from "@/components/ui/scroll-area"
 import { Label } from "../ui/label"
 import { Card } from "../ui/card";
 import { ButtonAddSubject } from "./ButtonAddSubject";
+import DeleteASubject from "./DeleteASubject";
 
 export interface Subjects {
   id: number;
@@ -61,6 +62,7 @@ export const ListingSubject = ({ onSubjectSelect }: ListingSubjectProps) => {
         {subjects.map((subject) => (
           <Card className="bg-[#F0F2FC] mt-1 h-[100px] grid justify-items-center content-center m-2" key={subject.id} onClick={() => handleSelectedCard(subject.id)}>
             <Label className="flex text-2xl font-bold">{subject.name}</Label>
+            <DeleteASubject subjectId={subject.id}/>
           </Card>
             ))}
       </div>
