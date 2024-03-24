@@ -18,32 +18,27 @@ interface TypeListProps{
 
 export const TypeList:React.FC<TypeListProps> = ({ SelectElement, TypeElement }) => 
 {
-    //const [elementSelect, setElementSelect] = useState<number|null>();
     const [categorySelect,setCategorySelect]=useState<string>('category');
 
     const handleReturnSelectElement = (element?:number,typeElement?:string)=>{
         SelectElement && SelectElement(element);
         TypeElement && TypeElement(typeElement);
-        console.log("test222",element)
     }
 
     const handleCategorySelect = (categoryId?: number) => {
         if(categorySelect=="category"){
             handleReturnSelectElement(categoryId,categorySelect)
-            console.log("test333",categoryId)
         }
     };
 
     const handleSubjectSelect = (subjectId: number) => {
         if(categorySelect=="subject"){
             handleReturnSelectElement(subjectId,categorySelect)
-            console.log("test444",subjectId)
         }
     };
 
     const handleTabsTriggerClick = (value: string) => {
-       //setElementSelect(null); // Réinitialiser la valeur de SelectElement à null
-        setCategorySelect(value); // Mettre à jour la valeur de categorySelect avec la valeur du TabsTrigger
+        setCategorySelect(value); 
       };
 
   return (

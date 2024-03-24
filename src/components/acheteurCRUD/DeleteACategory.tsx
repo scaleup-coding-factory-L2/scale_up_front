@@ -27,7 +27,7 @@ export default function DeleteACategory(props: Category) {
     if(subjectUsCategory.length === 0){
       await axios.delete(`http://localhost:3000/api/category/${props.categoryId}`);
     }else{
-      alert('vous ne pouvez pas delete une categorie utilisé dans une matière existante')
+      alert('vous ne pouvez pas supprimer une categorie utilisé dans une matière existante')
     }
   };
   return(

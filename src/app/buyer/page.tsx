@@ -4,18 +4,17 @@ import React, { useState } from "react";
 import { TypeList } from "@/components/acheteurCRUD/TypeList";
 import { ElementFormSelect } from "@/components/acheteurCRUD/ElementFormSelect";
 
-const AcheteurPage = () => {
+const BuyeurPage = () => {
 
   const [selectedInt, setSelectedInt] = useState<number | null | undefined>(null);
   const [selectedType, setSelectedType] = useState<string|undefined>("category");
-  const handleSelectedCard = (valeur?: number) => {
-    setSelectedInt(valeur);
+  const handleSelectedCard = (value?: number) => {
+    setSelectedInt(value);
   };
-  const handleTypeCard = (valeur?: string) => {
-    setSelectedType(valeur)
+  const handleTypeCard = (value?: string) => {
+    setSelectedType(value)
   };
-console.log(selectedInt)
-console.log(selectedType)
+
     return (
       <div className="flex flex-row">
         <div className="ml-48">
@@ -38,4 +37,4 @@ console.log(selectedType)
     );
   };
   
-  export default AcheteurPage;
+  export default BuyeurPage;

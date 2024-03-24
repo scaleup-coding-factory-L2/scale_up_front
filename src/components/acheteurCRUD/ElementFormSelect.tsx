@@ -13,7 +13,6 @@ import ReturnCategory from "./CategoryForSubject"
 import { Label } from "../ui/label"
 import { ButtonUpdateCategory } from "./ButtonUpdateCategory"
 import { ButtonUpdateSubject } from "./ButtonUpdateSubject"
-//type CardProps = React.ComponentProps<typeof Card>
 
 interface TypeCardInterface{
     TypeCard?:string;
@@ -31,8 +30,7 @@ export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterfac
                 const getCard = async () => {
                     const { data: res } = await axios.get(apiEndPoint);
                     setCardSubject(res);
-                    console.log('idsubject',IdCard)
-                    console.log('testsubject',cardSubject)
+                    
                 };
                 getCard();
             }
@@ -42,9 +40,7 @@ export function ElementFormSelect({TypeCard="category", IdCard}:TypeCardInterfac
                 const getCard = async () => {
                     const { data: res } = await axios.get(apiEndPointCardCategory);
                     setCardCategory(res);
-                    console.log('idCategory',IdCard)
-                    console.log('test',res)
-                    console.log('testcategory',cardCategory)
+                    
                 };
                 getCard();
             }
