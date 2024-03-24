@@ -60,7 +60,7 @@ export const ListingSubject = ({ onSubjectSelect }: ListingSubjectProps) => {
       <div className="overflow-auto">
         <ButtonAddSubject/>
         {subjects.map((subject) => (
-          <Card className="bg-[#F0F2FC] mt-1 h-[100px] grid justify-items-center content-center m-2" key={subject.id} onClick={() => handleSelectedCard(subject.id)}>
+          <Card className="bg-[#F0F2FC] mt-1 h-[100px] grid justify-items-center content-center m-2 " key={subject.id} onClick={() => handleSelectedCard(subject.id)}>
             <Label className="flex text-2xl font-bold">{subject.name}</Label>
             <DeleteASubject subjectId={subject.id}/>
           </Card>
